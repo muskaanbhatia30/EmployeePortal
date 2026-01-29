@@ -146,7 +146,7 @@ pipeline {
                             echo "Build number: ${BUILD_NUMBER}"
                             # Update image tag in deployment.yaml
                             sed -i "s|mern-frontend:.*|mern-frontend:${BUILD_NUMBER}|" deployment.yaml
-                            git checkout feature/feature-demo
+                            git checkout feature-1
                             git add deployment.yaml
                             git commit -m "Update deployment Image to version \${BUILD_NUMBER}"
                             git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} feature/feature-demo
