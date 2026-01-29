@@ -137,7 +137,7 @@ pipeline {
                 GIT_USER_NAME = "muskaanbhatia30"
             }
             steps {
-                dir('k8-manifest/frontend') {
+                dir('project/k8-manifest/frontend') {
                     withCredentials([string(credentialsId: 'github_token', variable: 'GITHUB_TOKEN')]) {
                         sh '''
                             git config user.email "2019pietcsmuskaan103@poornima.org"
