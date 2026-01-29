@@ -1,37 +1,38 @@
+version: "3.8"
 services:
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    networks:
+      - app_network
+    volumes:
+      - mongo-data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+
   backend:
-     build: ./project/backend
-     ports:
-       - "5050:5050"
-     networks:
-       - app_network
-     environment:
-       MONGO_URI: mongodb://mongo:27017/appdb
-       depends_on:
-        -mongodb
+    build: ./project/backend
+    ports:
+      - "5050:5050"
+    networks:
+      - app_network
+    environment:
+      MONGO_URI: mongodb://admin:password@mongodb:27017/employees?authSource=admin
+    depends_on:
+      - mongodb
 
   frontend:
     build: ./project/frontend
     ports:
-      - "5173:5173" 
-    networks:
-      - app_network   
-    environment:
-      REACT_APP_API_URL: http://backend:5050    
-
-  mongodb:
-    image: mongo:latest  
-    ports:
-      - "27017:27017"  
+      - "5173:5173"
     networks:
       - app_network
-    volumes:
-      - mongo-data:/data/db    
 
 networks:
   app_network:
-    driver: bridge 
+    driver: bridge
 
 volumes:
   mongo-data:
-    driver: local  # Persist MongoDB data locally          

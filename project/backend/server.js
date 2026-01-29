@@ -7,9 +7,9 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use("/record", records);
+app.use("/api/record", records);
 
 // start the Express server
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server listening on port ${PORT}`);
 });
