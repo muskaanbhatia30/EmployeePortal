@@ -133,7 +133,7 @@ pipeline {
 
         stage("Updating frontend deployment file"){
              environment {
-                GIT_REPO_NAME = "Application-k8"
+                GIT_REPO_NAME = "EmployeePortal"
                 GIT_USER_NAME = "muskaanbhatia30"
             }
             steps {
@@ -149,7 +149,7 @@ pipeline {
                             git checkout feature-1
                             git add deployment.yaml
                             git commit -m "Update deployment Image to version \${BUILD_NUMBER}"
-                            git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} feature/feature-demo
+                            git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} feature-1
                         '''
                     }
                 }
