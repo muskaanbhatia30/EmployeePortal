@@ -1,0 +1,28 @@
+# =========================
+# Frontend Deployment
+# =========================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: mern
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      imagePullSecrets:
+        - name: ecr-secret
+      containers:
+        - name: frontend
+          image: 389275957030.dkr.ecr.us-west-2.amazonaws.com/mern-frontend:v9
+          ports:
+            - containerPort: 5173
+          envFrom:
+            - configMapRef:
+                name: mern-config

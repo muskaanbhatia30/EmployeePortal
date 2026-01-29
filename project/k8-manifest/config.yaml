@@ -1,0 +1,11 @@
+# =========================
+# ConfigMap
+# =========================
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mern-config
+  namespace: mern
+data:
+  MONGO_URI: mongodb://admin:password@mongodb:27017/employees?authSource=admin
+ 
