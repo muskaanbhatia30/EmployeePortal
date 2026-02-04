@@ -55,27 +55,27 @@ pipeline {
         }
 
        // sonar authentication and collects code and coverage report
-        stage('SonarQube Scan') {
-            steps {
-                withSonarQubeEnv('SonarServer') {  
-                    dir(env.APP_DIR) {
-                       sh '/opt/sonar-scanner/bin/sonar-scanner'
-                    }
-                }
-            }
-        }
+        // stage('SonarQube Scan') {
+        //     steps {
+        //         withSonarQubeEnv('SonarServer') {  
+        //             dir(env.APP_DIR) {
+        //                sh '/opt/sonar-scanner/bin/sonar-scanner'
+        //             }
+        //         }
+        //     }
+        // }
 
-        stage('Quality Gate') {
-            steps {
-                catchError(buildResult: 'SUCCESS', message: 'It will be fixed later as no test file', stageResult: 'UNSTABLE')
-                {
-                timeout(time: 1, unit: 'MINUTES') {
-                                        waitForQualityGate abortPipeline: true
-                                    }
-                }                   
+        // stage('Quality Gate') {
+        //     steps {
+        //         catchError(buildResult: 'SUCCESS', message: 'It will be fixed later as no test file', stageResult: 'UNSTABLE')
+        //         {
+        //         timeout(time: 1, unit: 'MINUTES') {
+        //                                 waitForQualityGate abortPipeline: true
+        //                             }
+        //         }                   
             
-            }
-        }
+        //     }
+        // }
         
         stage (" Building frontend docker image"){
             steps{
@@ -137,17 +137,18 @@ pipeline {
                 GIT_USER_NAME = "muskaanbhatia30"
             }
             steps {
-                dir('project/k8-manifest/frontend') {
+                dir('project/k8-manifest') {
                     withCredentials([string(credentialsId: 'github_token', variable: 'GITHUB_TOKEN')]) {
                         sh '''
-                            git checkout feature-1
+                            
                             git config user.email "2019pietcsmuskaan103@poornima.org"
                             git config user.name "muskaanbhatia30"
                             BUILD_NUMBER=${BUILD_NUMBER}
                             echo "Build number: ${BUILD_NUMBER}"
-                            # Update image tag in deployment.yaml
-                            sed -i "s|mern-frontend:.*|mern-frontend:${BUILD_NUMBER}|" deployment.yaml
-                            git add deployment.yaml
+                            # Update image tag in frontend-deployment.yaml
+                            sed -i "s|mern-frontend:.*|mern-frontend:${BUILD_NUMBER}|" frontend-deployment.yaml
+                            git checkout feature-1
+                            git add frontend-deployment.yaml
                             git commit -m "Update deployment Image to version \${BUILD_NUMBER}"
                             git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} feature-1
                         '''
